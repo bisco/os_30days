@@ -80,7 +80,7 @@ putloop:
         CMP     AL, 0
         JE      fin
         MOV     AH, 0x0e        ; 1文字表示ファンクション
-        MOV     BX, 15          ; カラーコード
+        MOV     BX, 10          ; カラーコード
         INT     0x10            ; ビデオBIOS呼び出し
         JMP     putloop
 fin:
@@ -92,6 +92,10 @@ msg:
         DB      0x0a
         DB      0
 
-        TIMES 0x7dfe-($-$$) DB 0
+        TIMES 0x1fe-($-$$) DB 0
 
         DB      0x55, 0xaa
+        DB      0xf0, 0xff, 0xff, 0xff, 0x0f, 0x00, 0x00, 0x00
+        TIMES 4600 DB 0
+        DB      0xf0, 0xff, 0xff, 0xff, 0x0f, 0x00, 0x00, 0x00
+        TIMES 1469432 DB 0
