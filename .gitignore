@@ -1,3 +1,7 @@
 .*swp
 *.img
 *generated*
+*.o
+*.dmp
+*.lst
+*.sys
