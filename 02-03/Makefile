@@ -7,8 +7,6 @@ $(TARGET).img : ipl10.bin $(TARGET).sys
 	dd if=ipl10.bin of=$(TARGET).img count=2880 bs=512 conv=notrunc
 	dd if=$(TARGET).name of=$(TARGET).img count=1 bs=512 seek=19 conv=notrunc
 	dd if=$(TARGET).sys of=$(TARGET).img count=4 bs=512 seek=33 conv=notrunc
-bootpack.gas : bootpack.c
-	$(CC) $(CFLAGS) $(C_ASMFLAGS) -o bootpack.s bootpack.c
 
 %.o:%.c
 	gcc -m32 -c -fno-pic -nostdlib -o $@ $<
