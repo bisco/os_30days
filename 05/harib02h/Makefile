@@ -11,7 +11,7 @@ $(TARGET).img : ipl10.bin $(TARGET).sys
 	dd if=$(TARGET).sys of=$(TARGET).img count=15 bs=512 seek=33 conv=notrunc # プログラムは0x4200バイト目から
 
 %.o:%.c
-	gcc -m32 -c -fno-pic -o $@ $<
+	gcc -m32 -c -fno-pic -nostdlib -o $@ $<
 	objdump -D $@ > $@.dmp
 
 %.bin : %.oT
@@ -26,7 +26,7 @@ asmhead.o : asmhead.s
 naskfunc.o : naskfunc.s
 	nasm -felf32 -o $@ $^ -l $^.lst
 
-$(TARGET).bin : bootpack.o naskfunc.o hankaku.o
+$(TARGET).bin : bootpack.o naskfunc.o hankaku.o sprintf.o
 	ld -m elf_i386 -e HariMain -n -Thrb.ld -static -o $(TARGET).bin $^
 	hexdump -C $(TARGET).bin > $(TARGET).bin.dmp
 
