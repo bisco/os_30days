@@ -8,7 +8,7 @@ void init_gdtidt(void) {
     int i;
 
     // init GDT
-    for(i=0; i<LIMIT_GDT; i++) {
+    for(i=0; i<LIMIT_GDT / 8; i++) {
         set_segmdesc(gdt + i, 0, 0, 0);
     }
     set_segmdesc(gdt + 1, 0xffffffff,   0x00000000, AR_DATA32_RW);
