@@ -32,9 +32,8 @@ void HariMain(void) {
     sht_mouse = sheet_alloc(shtctl);
     buf_back = (unsigned char *)memman_alloc_4k(memman, binfo->scrnx * binfo->scrny);
     sheet_setbuf(sht_back, buf_back, binfo->scrnx, binfo->scrny, -1); // 透明色なし
-    sheet_setbuf(sht_mouse, buf_mouse, 16, 16, 99);
+    sheet_setbuf(sht_mouse, buf_mouse, 16, 16, 99); // 背景色は99
     init_screen8(buf_back, binfo->scrnx, binfo->scrny);
-    //putfonts8_asc(binfo->vram, binfo->scrnx, 0, 0, COL8_FFFFFF, "Hello nbisco OS");
     init_mouse_cursor8(buf_mouse, 99);
     sheet_slide(shtctl, sht_back, 0, 0);
     mx = (binfo->scrnx - 16) / 2;
