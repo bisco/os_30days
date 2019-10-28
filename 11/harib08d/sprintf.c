@@ -1,10 +1,11 @@
 #include <stdarg.h>
 
 //10進数からASCIIコードに変換
-int dec2asc (char *str, int dec) {
+int dec2asc (char *str, int dec, char fill, int fill_times) {
     int len = 0, len_buf; //桁数
-    int buf[10];
+    int buf[30];
     int minus = 0;
+    int i;
     if(dec < 0) {
         dec = -dec;
         minus = 1;
@@ -13,6 +14,9 @@ int dec2asc (char *str, int dec) {
         buf[len++] = dec % 10;
         if (dec < 10) break;
         dec /= 10;
+    }
+    for(;fill_times > len;) {
+        buf[len++] = fill - 0x30;
     }
     if(minus) {
         buf[len++] = '-' - 0x30;
@@ -25,7 +29,7 @@ int dec2asc (char *str, int dec) {
 }
 
 //16進数からASCIIコードに変換
-int hex2asc (char *str, int dec) { //16で割れた回数（つまり桁数）をlenに、各桁をbufに格納
+int hex2asc (char *str, int dec, char fill, int fill_times) { //16で割れた回数（つまり桁数）をlenに、各桁をbufに格納
     int len = 0, len_buf; //桁数
     int buf[10];
     int minus = 0;
@@ -37,6 +41,9 @@ int hex2asc (char *str, int dec) { //16で割れた回数（つまり桁数）�
         buf[len++] = dec % 16;
         if (dec < 16) break;
         dec /= 16;
+    }
+    for(;fill_times > len;) {
+        buf[len++] = fill - 0x30;
     }
     if(minus) {
         buf[len++] = '-' - 0x30;
@@ -51,18 +58,35 @@ int hex2asc (char *str, int dec) { //16で割れた回数（つまり桁数）�
 
 void mysprintf (char *str, char *fmt, ...) {
     va_list list;
-    int i, len;
+    char fill;
+    char count[5];
+    int i, j, len, fill_times = 0;
     va_start (list, fmt);
 
     while (*fmt) {
         if(*fmt=='%') {
             fmt++;
+            switch(*fmt) {
+            case 'd':
+            case 'x':
+                break;
+            default:
+                fill = *(fmt++);
+                for(i=0;;i++) {
+                    count[i] = *(fmt++);
+                    if((*fmt == 'd') || (*fmt == 'x')) break;
+                }
+                for(j = 0; i >= 0; i--, j++) {
+                    fill_times += 10 * j * (count[i] - '0');
+                }
+                break;
+            }
             switch(*fmt){
                 case 'd':
-                    len = dec2asc(str, va_arg (list, int));
+                    len = dec2asc(str, va_arg (list, int), fill, fill_times);
                     break;
                 case 'x':
-                    len = hex2asc(str, va_arg (list, int));
+                    len = hex2asc(str, va_arg (list, int), fill, fill_times);
                     break;
             }
             str += len; fmt++;
