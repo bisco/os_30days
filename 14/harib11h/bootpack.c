@@ -136,7 +136,7 @@ void HariMain(void) {
                     timer_init(timer3, &fifo, 0); // 次は0
                     cursor_c = COL8_000000;
                 } else {
-                    timer_init(timer3, &fifo, 0); // 次は0
+                    timer_init(timer3, &fifo, 1); // 次は1
                     cursor_c = COL8_FFFFFF;
                 }
                 timer_settime(timer3, 50);
