@@ -419,7 +419,7 @@ void console_task(struct SHEET *sheet) {
                     // バックスペース
                     if(cursor_x > 16) {
                         // カーソルをスペースで消してから、カーソルを1つ戻す
-                        putfonts8_asc_sht(sheet, cursor_x, cursor_y, COL8_000000, COL8_000000, " ", 1);
+                        putfonts8_asc_sht(sheet, cursor_x, cursor_y, COL8_FFFFFF, COL8_000000, " ", 1);
                         cursor_x -= 8;
                     }
                 } else if(i == 10 + 256) {
